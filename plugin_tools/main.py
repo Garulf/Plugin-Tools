@@ -4,7 +4,7 @@ from pathlib import Path
 
 import typer
 
-from .constants import LIB_DIR, REQUIREMENTS
+from .constants import LIB_DIR, REQUIREMENTS, PLUGIN_MANIFEST
 from .zipapp import (
     build,
     dist,
@@ -26,6 +26,9 @@ def zipapp(source: Source, clean: Clean = False, requirements: Requirements = Pa
     """
     Package Plugin as zipapp.
     """
+    if not Path(source).joinpath(PLUGIN_MANIFEST).exists():
+        typer.echo(f'Plugin manifest not found in {source}.')
+        raise typer.Exit(code=1)
     if clean:
         shutil.rmtree(LIB_DIR)
     lib.lib()
