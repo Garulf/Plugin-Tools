@@ -4,7 +4,7 @@ from pathlib import Path
 
 import typer
 
-from .constants import LIB_DIR
+from .constants import LIB_DIR, REQUIREMENTS
 from .zipapp import (
     build,
     dist,
@@ -19,10 +19,10 @@ app = typer.Typer(no_args_is_help=True)
 
 Source = Annotated[Path, typer.Argument(help='Path to Plugin source directory.', file_okay=False)]
 Clean = Annotated[bool, typer.Option(help='Build using clean cache.')]
-
+Requirements = Annotated[Path, typer.Option(help='Path to requirements.txt file.', file_okay=True, dir_okay=False)]
 
 @app.command()
-def zipapp(source: Source, clean: Clean = False):
+def zipapp(source: Source, clean: Clean = False, requirements: Requirements = Path(REQUIREMENTS)):
     """
     Package Plugin as zipapp.
     """
